@@ -1,0 +1,768 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Villa Agency - Real Estate HTML5 Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-villa-agency.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+<!-- 
+    <style>
+        .main-banner .item-1 {
+            background-image: url("{% static 'assets/images/deal-01.jpg' %}");
+        }
+
+        .main-banner .item-2 {
+            background-image: url("{% static 'assets/images/banner-02.jpg' %}");
+        }
+
+        .main-banner .item-3 {
+            background-image: url("{% static 'assets/images/banner-03.jpg' %}");
+        }
+    </style> -->
+
+
+    
+
+  </head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <!-- <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div> -->
+  <!-- ***** Preloader End ***** -->
+
+  <div class="sub-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8">
+                <ul class="info">
+                    <li><i class="fa fa-envelope"></i> 
+                        {% if contact_info and contact_info.email %}
+                            {{ contact_info.email }}
+                        {% else %}
+                            info@demo.com
+                        {% endif %}
+                    </li>
+                    <li><i class="fa fa-map"></i> 
+                        {% if contact_info and contact_info.address %}
+                            {{ contact_info.address }}
+                        {% else %}
+                            123 Demo Street, Demo City
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <ul class="social-links">
+                    {% if social_links.exists %}
+                        {% for social in social_links %}
+                            <li><a href="{{ social.url }}" target="_blank">
+                                <i class="fab fa-{{ social.platform }}"></i></a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Default demo social media links -->
+                        <li><a href="https://facebook.com" target="_blank">
+                            <i class="fab fa-facebook"></i></a>
+                        </li>
+                        <li><a href="https://twitter.com" target="_blank">
+                            <i class="fab fa-twitter"></i></a>
+                        </li>
+                        <li><a href="https://linkedin.com" target="_blank">
+                            <i class="fab fa-linkedin"></i></a>
+                        </li>
+                        <li><a href="https://instagram.com" target="_blank">
+                            <i class="fab fa-instagram"></i></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="{% url 'index' %}" class="logo">
+              {% if site_logo and site_logo.logo %}
+                <img src="{{ site_logo.logo.url }}" alt="Company Logo" class="img-fluid" style="max-height: 60px; margin-bottom: -68px;">
+              {% else %}
+                <!-- Default logo in case no logo is uploaded -->
+                <img src="{% static 'assets/images/decor.png' %}" alt="Default Logo" class="img-fluid" style="max-height: 60px; margin-bottom: -68px;">
+              {% endif %}
+            </a>
+            <!-- ***** Logo End ***** -->
+            
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li><a href="index.html" class="active">Home</a></li>
+              <li><a href="properties.html">Properties</a></li>
+              <li><a href="property-details.html">Property Details</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+              <li><a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a></li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- ***** Header Area End ***** -->
+  <div class="main-banner">
+    <div class="owl-carousel owl-banner">
+      {% for banner in banners %}
+      <div class="item" style="background-image: url('media/{{ banner.image }}');">
+        <div class="header-text">
+          <span class="category">{{ banner.subheading }}</span>
+          <h2>{{ banner.heading }}</h2>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <div class="featured section">
+    <div class="container">
+      <div class="section-heading text-center wow fadeInDown">
+        <h6>| Our Services</h6>
+        <h5 class="main-heading">Transform Your Home with Premium Décor</h5>
+      </div>
+      <div class="row">
+        {% for service in services %}
+        <div class="col-lg-4 col-md-6 service-item wow fadeInLeft" data-wow-delay="0.3s">
+          <div class="service-card">
+            <a href="{% url 'service_detail' service.id %}" class="service-link">
+            <div class="service-image">
+              <img src="{{ service.image.url }}" alt="{{ service.name }}">
+            </div>
+            <h4><i class="fas {{ service.icon }}"></i> {{ service.name }}</h4>
+            <ul>
+              {% for option in service.options.all %}
+              <li>{{ option.name }}</li>
+              {% endfor %}
+            </ul>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add some CSS for styling and animations -->
+  <style>
+    .main-heading {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1e1e1e;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+  
+    .main-heading {
+      animation: fadeInUp 1s ease-in-out;
+    }
+  
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  
+    .service-card {
+  display: block;
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+  
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.2);
+}
+
+.service-card:active {
+  transform: translateY(0px);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+}
+  
+    .service-image {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+  
+    .service-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+  
+    .service-card:hover .service-image img {
+      transform: scale(1.1);
+    }
+    .service-card h4 {
+  font-size: 22px;
+  margin-top: 15px;
+  color: #f35525;
+  font-weight: 600;
+  text-align: center;
+}
+
+  
+    .service-card h4 i {
+      margin-right: 10px;
+      color: #f35525;
+    }
+  
+    .service-card ul {
+  list-style-type: none;
+  padding-left: 0;
+  text-align: center;
+  margin-top: 10px;
+}
+  
+.service-card ul li {
+  font-size: 16px;
+  color: #4a4a4a;
+  margin-bottom: 8px;
+}
+  
+    .service-card p {
+      font-size: 16px;
+      color: #4a4a4a;
+      text-align: center;
+    }
+  
+    .section-heading h6 {
+      color: #f35525;
+      font-size: 14px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+  
+    .section-heading h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1e1e1e;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+  
+    @media (max-width: 768px) {
+      .main-heading {
+        font-size: 24px;
+      }
+  
+      .service-card {
+        margin-bottom: 20px;
+      }
+  
+      .service-image {
+        height: 150px;
+      }
+  
+      .service-card h4 {
+        font-size: 20px;
+      }
+    }
+  </style>
+  
+  <!-- WOW.js animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+  <script>
+    new WOW().init();
+  </script>
+  
+  <div class="video section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 offset-lg-4">
+                <div class="section-heading text-center">
+                    <h6>| {{ video_section.title }}</h6>
+                    <h2>{{ video_section.subtitle }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="video-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="video-frame position-relative">
+                    <img src="{{ video_section.video_thumbnail.url }}" alt="Video Thumbnail" class="img-fluid rounded">
+                    <a href="{{ video_section.video_url }}" target="_blank">
+                        <i class="fa fa-play"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fun-facts">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="wrapper">
+                  <div class="row">
+                      {% for fact in fun_facts %}
+                      <div class="col-lg-4">
+                          <div class="counter">
+                              <h2 class="timer count-title count-number" data-to="{{ fact.value }}" data-speed="1000">
+                                  {{ fact.value }}
+                              </h2>
+                              <p class="count-text">{{ fact.title }}<br>{{ fact.description }}</p>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<style>/* Video Frame */
+  .video-frame {
+      position: relative;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+  }
+  
+  .video-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+  }
+  
+  .video-frame a {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background-color: #ff4d4d;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fff;
+      transition: background-color 0.3s ease;
+  }
+  
+  .video-frame a:hover {
+      background-color: #e33d3d;
+  }
+  
+  /* Fun Facts */
+  .fun-facts .counter {
+      background-color: #f9f9f9;
+      padding: 30px 15px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+  }
+  
+  .fun-facts .counter:hover {
+      transform: translateY(-5px);
+  }
+  
+  .fun-facts .counter h2 {
+      font-size: 3rem;
+      color: #ff4d4d;
+      margin-bottom: 10px;
+  }
+  
+  .fun-facts .counter p {
+      font-size: 1rem;
+      color: #333;
+      margin: 0;
+      font-weight: 500;
+  }
+
+
+  @media (max-width: 768px) {
+    .video-frame a {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .fun-facts .counter h2 {
+        font-size: 2.5rem;
+    }
+
+    .fun-facts .counter {
+        padding: 20px 10px;
+    }
+}
+
+  </style>
+
+  <!-- <div class="section best-deal">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="section-heading">
+            <h6>| Best Deal</h6>
+            <h2>Find Your Best Deal Right Now!</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="tabs-content">
+            <div class="row">
+              <div class="nav-wrapper ">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="appartment-tab" data-bs-toggle="tab" data-bs-target="#appartment" type="button" role="tab" aria-controls="appartment" aria-selected="true">Appartment</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="villa-tab" data-bs-toggle="tab" data-bs-target="#villa" type="button" role="tab" aria-controls="villa" aria-selected="false">Villa House</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="penthouse-tab" data-bs-toggle="tab" data-bs-target="#penthouse" type="button" role="tab" aria-controls="penthouse" aria-selected="false">Penthouse</button>
+                  </li>
+                </ul>
+              </div>              
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="appartment" role="tabpanel" aria-labelledby="appartment-tab">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <div class="info-table">
+                        <ul>
+                          <li>Total Flat Space <span>185 m2</span></li>
+                          <li>Floor number <span>26th</span></li>
+                          <li>Number of rooms <span>4</span></li>
+                          <li>Parking Available <span>Yes</span></li>
+                          <li>Payment Process <span>Bank</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <img src="assets/images/deal-01.jpg" alt="">
+                    </div>
+                    <div class="col-lg-3">
+                      <h4>Extra Info About Property</h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut labore et dolore magna aliqua quised ipsum suspendisse. 
+                      <br><br>When you need free CSS templates, you can simply type TemplateMo in any search engine website. In addition, you can type TemplateMo Portfolio, TemplateMo One Page Layouts, etc.</p>
+                      <div class="icon-button">
+                        <a href="property-details.html"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="villa" role="tabpanel" aria-labelledby="villa-tab">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <div class="info-table">
+                        <ul>
+                          <li>Total Flat Space <span>250 m2</span></li>
+                          <li>Floor number <span>26th</span></li>
+                          <li>Number of rooms <span>5</span></li>
+                          <li>Parking Available <span>Yes</span></li>
+                          <li>Payment Process <span>Bank</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <img src="assets/images/deal-02.jpg" alt="">
+                    </div>
+                    <div class="col-lg-3">
+                      <h4>Detail Info About Villa</h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut labore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
+                      <div class="icon-button">
+                        <a href="property-details.html"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="penthouse" role="tabpanel" aria-labelledby="penthouse-tab">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <div class="info-table">
+                        <ul>
+                          <li>Total Flat Space <span>320 m2</span></li>
+                          <li>Floor number <span>34th</span></li>
+                          <li>Number of rooms <span>6</span></li>
+                          <li>Parking Available <span>Yes</span></li>
+                          <li>Payment Process <span>Bank</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <img src="assets/images/deal-03.jpg" alt="">
+                    </div>
+                    <div class="col-lg-3">
+                      <h4>Extra Info About Penthouse</h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut labore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
+                      <div class="icon-button">
+                        <a href="property-details.html"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="properties section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 offset-lg-4">
+                <div class="section-heading text-center">
+                    <h6>| Properties</h6>
+                    <h2>We Provide The Best Property You Like</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for product in latest_products %}
+            <div class="col-lg-4 col-md-6">
+                <div class="item">
+                    <a href="{{ product.get_absolute_url }}">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                    </a>
+                    <span class="category">{{ product.service_option.service.name }}</span>
+                    <h6>${{ product.price }}</h6>
+                    <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4>
+                    <ul>
+                        <li>Dimensions: <span>{{ product.dimensions }}</span></li>
+                        <li>Warranty: <span>{{ product.warranty_summary|default:"N/A" }}</span></li>
+                        <li>Return Policy: <span>{{ product.return_policy|default:"N/A" }}</span></li>
+                    </ul>
+                    <div class="main-button">
+                        <a href="{{ product.get_absolute_url }}">Schedule a visit</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<style>.properties .item {
+  background-color: #fafafa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.properties .item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.properties .item img {
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.properties .item span.category {
+  display: inline-block;
+  background-color: #ff4d4d;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.properties .item h6 {
+  font-size: 20px;
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.properties .item h4 {
+  font-size: 18px;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.properties .item ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.properties .item ul li {
+  margin-bottom: 5px;
+}
+
+.properties .item .main-button a {
+  display: inline-block;
+  background-color: #ff6600;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.properties .item .main-button a:hover {
+  background-color: #e35500;
+}
+</style>
+  <div class="contact section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 offset-lg-4">
+          <div class="section-heading text-center">
+            <h6>| Contact Us</h6>
+            <h2>Get In Touch With Our Agents</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7">
+          <div id="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12469.776493332698!2d-80.14036379941481!3d25.907788681148624!2m3!1f357.26927939317244!2f20.870722720054623!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x88d9add4b4ac788f%3A0xe77469d09480fcdb!2sSunny%20Isles%20Beach!5e1!3m2!1sen!2sth!4v1642869952544!5m2!1sen!2sth" width="100%" height="500px" frameborder="0" style="border:0; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);" allowfullscreen=""></iframe>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="item phone">
+                <img src="assets/images/phone-icon.png" alt="" style="max-width: 52px;">
+                <h6>010-020-0340<br><span>Phone Number</span></h6>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="item email">
+                <img src="assets/images/email-icon.png" alt="" style="max-width: 52px;">
+                <h6>info@villa.co<br><span>Business Email</span></h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <form id="contact-form" action="" method="post">
+            <div class="row">
+              <div class="col-lg-12">
+                <fieldset>
+                  <label for="name">Full Name</label>
+                  <input type="name" name="name" id="name" placeholder="Your Name..." autocomplete="on" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-12">
+                <fieldset>
+                  <label for="email">Email Address</label>
+                  <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your E-mail..." required="">
+                </fieldset>
+              </div>
+              <div class="col-lg-12">
+                <fieldset>
+                  <label for="subject">Subject</label>
+                  <input type="subject" name="subject" id="subject" placeholder="Subject..." autocomplete="on" >
+                </fieldset>
+              </div>
+              <div class="col-lg-12">
+                <fieldset>
+                  <label for="message">Message</label>
+                  <textarea name="message" id="message" placeholder="Your Message"></textarea>
+                </fieldset>
+              </div>
+              <div class="col-lg-12">
+                <fieldset>
+                  <button type="submit" id="form-submit" class="orange-button">Send Message</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="col-lg-8">
+        <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 
+        
+        Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com">ThemeWagon</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/isotope.min.js' %}"></script>
+  <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+  <script src="{% static 'assets/js/counter.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+  
+
+  </body>
+</html>

@@ -1,0 +1,385 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Villa Agency - Real Estate HTML5 Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-villa-agency.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+<!-- 
+    <style>
+        .main-banner .item-1 {
+            background-image: url("{% static 'assets/images/deal-01.jpg' %}");
+        }
+
+        .main-banner .item-2 {
+            background-image: url("{% static 'assets/images/banner-02.jpg' %}");
+        }
+
+        .main-banner .item-3 {
+            background-image: url("{% static 'assets/images/banner-03.jpg' %}");
+        }
+    </style> -->
+
+
+    
+
+  </head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <!-- <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div> -->
+  <!-- ***** Preloader End ***** -->
+
+  <div class="sub-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8">
+                <ul class="info">
+                    <li><i class="fa fa-envelope"></i> 
+                        {% if contact_info and contact_info.email %}
+                            {{ contact_info.email }}
+                        {% else %}
+                            info@demo.com
+                        {% endif %}
+                    </li>
+                    <li><i class="fa fa-map"></i> 
+                        {% if contact_info and contact_info.address %}
+                            {{ contact_info.address }}
+                        {% else %}
+                            123 Demo Street, Demo City
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <ul class="social-links">
+                    {% if social_links.exists %}
+                        {% for social in social_links %}
+                            <li><a href="{{ social.url }}" target="_blank">
+                                <i class="fab fa-{{ social.platform }}"></i></a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Default demo social media links -->
+                        <li><a href="https://facebook.com" target="_blank">
+                            <i class="fab fa-facebook"></i></a>
+                        </li>
+                        <li><a href="https://twitter.com" target="_blank">
+                            <i class="fab fa-twitter"></i></a>
+                        </li>
+                        <li><a href="https://linkedin.com" target="_blank">
+                            <i class="fab fa-linkedin"></i></a>
+                        </li>
+                        <li><a href="https://instagram.com" target="_blank">
+                            <i class="fab fa-instagram"></i></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="{% url 'index' %}" class="logo">
+              {% if site_logo and site_logo.logo %}
+                <img src="{{ site_logo.logo.url }}" alt="Company Logo" class="img-fluid" style="max-height: 60px; margin-bottom: -68px;">
+              {% else %}
+                <!-- Default logo in case no logo is uploaded -->
+                <img src="{% static 'assets/images/decor.png' %}" alt="Default Logo" class="img-fluid" style="max-height: 60px; margin-bottom: -68px;">
+              {% endif %}
+            </a>
+            <!-- ***** Logo End ***** -->
+            
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li><a href="index.html" class="active">Home</a></li>
+              <li><a href="properties.html">Properties</a></li>
+              <li><a href="property-details.html">Property Details</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+              <li><a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a></li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="breadcrumb"><a href="#">Home</a> / Services/ Product Details</span>
+          <h3>Product Details</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="single-property section py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Product Image -->
+            <div class="col-lg-6">
+                <div class="product-image-wrapper mb-4">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow">
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-lg-6">
+                <h1 class="product-name">{{ product.name }}</h1>
+                <p class="product-category">{{ product.service_option.service.name }}</p>
+                <p class="product-description">{{ product.description }}</p>
+                <div class="product-price mt-3">
+                    <h2>₹{{ product.price }}</h2>
+                    {% if product.original_price %}
+                    <p class="original-price text-muted">
+                        <del>₹{{ product.original_price }}</del> <span class="discount">({{ product.discount }}% OFF)</span>
+                    </p>
+                    {% endif %}
+                </div>
+               
+                <p class="stock-status">
+                    {% if product.in_stock %}
+                    <span class="badge bg-success">In Stock</span>
+                    {% else %}
+                    <span class="badge bg-danger">Out of Stock</span>
+                    {% endif %}
+                </p>
+
+                <!-- Purchase Button -->
+                <div class="purchase-btn mt-4">
+                    <a href="mailto:sales@example.com?subject=Purchase Request for {{ product.name }}&body=I am interested in purchasing the product {{ product.name }}. Please provide more details."
+                        class="btn btn-warning btn-lg shadow">
+                        Purchase via Email
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Features -->
+        <div class="row mt-5">
+            <div class="col-lg-12">
+                <h3 class="section-title">Product Details</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <h5>Dimensions</h5>
+                            <p>{{ product.dimensions|default:"No dimensions available" }}</p>
+                        </div>
+                        <div class="feature-card">
+                            <h5>Maintenance</h5>
+                            <p>{{ product.maintenance|default:"No maintenance guidelines available" }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <h5>Warranty</h5>
+                            <p>{{ product.warranty_summary|default:"No warranty details available" }}</p>
+                        </div>
+                        <div class="feature-card">
+                            <h5>Return Policy</h5>
+                            <p>{{ product.return_policy|default:"No return policy available" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accordion for More Information -->
+        <div class="row mt-5">
+            <div class="col-lg-12">
+                <div class="accordion modern-accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                More Information
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                {{ product.description }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>/* General Styling */
+    .section {
+        background-color: #f9f9f9;
+        padding: 60px 15px;
+    }
+    
+    .product-name {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .product-category {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    
+    .product-description {
+        font-size: 1rem;
+        color: #444;
+        line-height: 1.6;
+    }
+    
+    /* Price Styling */
+    .product-price {
+        font-size: 2rem;
+        color: #007bff;
+        font-weight: bold;
+    }
+    
+    .original-price {
+        font-size: 1rem;
+    }
+    
+    .discount {
+        color: #ff4d4d;
+        font-size: 1rem;
+    }
+    
+    /* Buttons */
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 30px;
+        color: white;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    
+    /* Feature Card */
+    .feature-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+    
+    .feature-card h5 {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    /* Accordion */
+    .accordion-item {
+        border: none;
+    }
+    
+    .accordion-button {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .accordion-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .accordion-body {
+        font-size: 1rem;
+        color: #555;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .product-price {
+            font-size: 1.8rem;
+        }
+    
+        .product-name {
+            font-size: 2rem;
+        }
+    
+        .btn-primary {
+            font-size: 1rem;
+        }
+    }
+    
+</style>
+
+
+
+  
+<footer>
+    <div class="container">
+      <div class="col-lg-8">
+        <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 
+        
+        Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com">ThemeWagon</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/isotope.min.js' %}"></script>
+  <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+  <script src="{% static 'assets/js/counter.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+  
+
+  </body>
+</html>

@@ -1,0 +1,399 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Villa Agency - Real Estate HTML5 Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-villa-agency.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+<!-- 
+    <style>
+        .main-banner .item-1 {
+            background-image: url("{% static 'assets/images/deal-01.jpg' %}");
+        }
+
+        .main-banner .item-2 {
+            background-image: url("{% static 'assets/images/banner-02.jpg' %}");
+        }
+
+        .main-banner .item-3 {
+            background-image: url("{% static 'assets/images/banner-03.jpg' %}");
+        }
+    </style> -->
+
+
+    
+
+  </head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <!-- <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div> -->
+  <!-- ***** Preloader End ***** -->
+
+  <div class="sub-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8">
+                <ul class="info">
+                    <li><i class="fa fa-envelope"></i> 
+                        {% if contact_info and contact_info.email %}
+                            {{ contact_info.email }}
+                        {% else %}
+                            info@demo.com
+                        {% endif %}
+                    </li>
+                    <li><i class="fa fa-map"></i> 
+                        {% if contact_info and contact_info.address %}
+                            {{ contact_info.address }}
+                        {% else %}
+                            123 Demo Street, Demo City
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <ul class="social-links">
+                    {% if social_links.exists %}
+                        {% for social in social_links %}
+                            <li><a href="{{ social.url }}" target="_blank">
+                                <i class="fab fa-{{ social.platform }}"></i></a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Default demo social media links -->
+                        <li><a href="https://facebook.com" target="_blank">
+                            <i class="fab fa-facebook"></i></a>
+                        </li>
+                        <li><a href="https://twitter.com" target="_blank">
+                            <i class="fab fa-twitter"></i></a>
+                        </li>
+                        <li><a href="https://linkedin.com" target="_blank">
+                            <i class="fab fa-linkedin"></i></a>
+                        </li>
+                        <li><a href="https://instagram.com" target="_blank">
+                            <i class="fab fa-instagram"></i></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="{% url 'index' %}" class="logo">
+              {% if site_logo and site_logo.logo %}
+                <img src="{{ site_logo.logo.url }}" alt="Company Logo" class="img-fluid" style="max-height: 60px; margin-bottom: -68px;">
+              {% else %}
+                <!-- Default logo in case no logo is uploaded -->
+                <img src="{% static 'assets/images/decor.png' %}" alt="Default Logo" class="img-fluid" style="max-height: 60px; margin-bottom: -68px;">
+              {% endif %}
+            </a>
+            <!-- ***** Logo End ***** -->
+            
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li><a href="index.html" class="active">Home</a></li>
+              <li><a href="properties.html">Properties</a></li>
+              <li><a href="property-details.html">Property Details</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+              <li><a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a></li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="breadcrumb"><a href="#">Home</a>  /  Single Property</span>
+          <h3>Single Property</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section properties">
+    <div class="container">
+        <!-- Filter Options -->
+        <ul class="properties-filter">
+            <li>
+                <a class="is_active" href="#!" data-filter="*">Show All</a>
+            </li>
+            {% for option in service.options.all %}
+            <li>
+                <a href="#!" data-filter=".{{ option.id }}">{{ option.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Product Cards -->
+        <div class="row properties-box">
+            {% for option in service.options.all %}
+            {% for product in option.products.all %}
+            <div class="col-lg-4 col-md-6 col-sm-12 properties-items {{ option.id }}">
+                <div class="product-card shadow-sm">
+                    <!-- Product Image -->
+                    <div class="product-image position-relative">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded">
+                        {% if product.is_new %}
+                        <span class="badge-new">New</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="product-details p-3">
+                        <h5 class="product-name">{{ product.name }}</h5>
+                        <p class="product-description">
+                            {{ product.short_description }}
+                        </p>
+                        <div class="price-container mt-2">
+                            <span class="price">₹{{ product.price }}</span>
+                            {% if product.original_price %}
+                            <span class="original-price">₹{{ product.original_price }}</span>
+                            {% endif %}
+                            {% if product.discount %}
+                            <span class="discount">({{ product.discount }}% OFF)</span>
+                            {% endif %}
+                        </div>
+                        <div class="stock-status mt-2">
+                            {% if product.in_stock %}
+                            <span class="badge badge-success">In Stock</span>
+                            {% else %}
+                            <span class="badge badge-danger">Out of Stock</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="product-actions text-center py-3">
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-view-details">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<style>/* Section Styling */
+/* Section Styling */
+.section.properties {
+    padding: 60px 15px;
+    background-color: #f9f9f9;
+}
+
+/* Card Styling */
+.product-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+    max-width: 100%;
+    height: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Image */
+.product-image {
+    position: relative;
+    text-align: center;
+    height: 200px; /* Fixed height for uniformity */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge-new {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #28a745;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+/* Product Details */
+.product-details {
+    text-align: center;
+    padding: 10px;
+}
+
+.product-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.product-description {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; /* Ensure a single-line short description */
+}
+
+.price-container {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.price {
+    color: #222;
+}
+
+.original-price {
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 5px;
+}
+
+.discount {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.stock-status {
+    margin-top: 10px;
+}
+
+.badge-success {
+    background: #28a745;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.badge-danger {
+    background: #dc3545;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+/* Button Styling */
+.btn-view-details {
+    background: #ff6600;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    transition: background 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-view-details:hover {
+    background: #cc5200;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-card {
+        height: auto;
+        margin-bottom: 15px;
+    }
+
+    .product-image {
+        height: 180px;
+    }
+
+    .btn-view-details {
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+}
+
+
+    </style>
+
+  
+  <footer>
+    <div class="container">
+      <div class="col-lg-8">
+        <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 
+        
+        Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com">ThemeWagon</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/isotope.min.js' %}"></script>
+  <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+  <script src="{% static 'assets/js/counter.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+  
+
+  </body>
+</html>

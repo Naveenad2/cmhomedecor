@@ -2,6 +2,8 @@
 from django.db import models
 from django.urls import reverse
 from decimal import Decimal
+from django.core.exceptions import ValidationError
+
 
 class ContactInfo(models.Model):
     email = models.EmailField(max_length=255)
@@ -143,10 +145,20 @@ class VideoSection(models.Model):
     title = models.CharField(max_length=255, help_text="Main title of the video section")
     subtitle = models.CharField(max_length=255, help_text="Subtitle or tagline of the video section")
     video_thumbnail = models.ImageField(upload_to="videos/", help_text="Thumbnail image for the video")
-    video_url = models.URLField(help_text="URL of the video (e.g., YouTube link)")
+    video_url = models.URLField(blank=True, null=True, help_text="URL of the video (e.g., YouTube link)")
+    video_file = models.FileField(upload_to="videos/", blank=True, null=True, help_text="Upload a video file")
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        """
+        Ensure that either video_url or video_file is provided, but not both.
+        """
+        if self.video_url and self.video_file:
+            raise ValidationError("You can only provide a video URL or upload a video file, not both.")
+        if not self.video_url and not self.video_file:
+            raise ValidationError("You must provide either a video URL or upload a video file.")
     
 class FunFact(models.Model):
     title = models.CharField(max_length=255, help_text="Title for the fun fact (e.g., 'Properties Sold')")

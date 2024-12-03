@@ -11,6 +11,8 @@ urlpatterns = [
     path('service/<int:id>/', views.service_detail, name='service_detail'),
     path('product/<int:pk>/', product_detail_view, name='product_detail'),
 
+    path('contact/', views.contact, name='contact'),
+
 ]
 
 if settings.DEBUG:
